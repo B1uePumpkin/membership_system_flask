@@ -86,6 +86,14 @@ def signin():
         session['nickname'] = is_correct['nickname']
         return redirect('/member')
     
+# 處理登出
+@app.route('/logout')
+def logout():
+    # 清除session
+    session.clear()
+    return redirect('/')
+
+
 #########################################################
 
 
