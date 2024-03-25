@@ -29,6 +29,33 @@ def error():
     return render_template('error.html', msg=msg)
 
 
+# 處理表單
+@app.route('/signup', methods=['POST'])
+def signup():
+    # 從前端接受資料
+    nickname = request.form.get('nickname')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    # 根據接收到的資料進行處理
+    collection = db.user
+
+    # 檢查 email 是否已經被註冊過
+    result = collection.find_one({
+        'email': email
+    })
+    if result != None:
+        return redirect('/error?msg=此帳號已經被註冊過')
+    
+    # 將資料存入資料庫，完成註冊
+    collection.insert_one({
+        'nickname': nickname,
+        'email': email,
+        'password': password
+    })
+    return redirect('/')
+
+
 
 app.secret_key = '00000000'
 app.run(port=3000)
