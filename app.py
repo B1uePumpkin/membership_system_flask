@@ -13,6 +13,9 @@ app = Flask(
     static_url_path='/'
 )
 
+
+#########################################################
+
 # 處理路由
 @app.route('/')
 def index():
@@ -28,6 +31,7 @@ def error():
     msg = request.args.get('msg', "發生錯誤")
     return render_template('error.html', msg=msg)
 
+#########################################################
 
 # 處理表單
 @app.route('/signup', methods=['POST'])
@@ -41,10 +45,10 @@ def signup():
     collection = db.user
 
     # 檢查 email 是否已經被註冊過
-    result = collection.find_one({
+    is_email_used = collection.find_one({
         'email': email
     })
-    if result != None:
+    if is_email_used != None:
         return redirect('/error?msg=此帳號已經被註冊過')
     
     # 將資料存入資料庫，完成註冊
@@ -55,6 +59,26 @@ def signup():
     })
     return redirect('/')
 
+
+# 處理登入表單
+@app.route('/signin', methods=['POST'])
+def signin():
+    # 從前端接受資料
+    email = request.form.get('email')
+    password = request.form.get('password')
+    # 檢查 email 和 password 是否正確
+    collection = db.user
+    is_correct = collection.find_one
+    ({
+        'email': email,
+        'password': password
+    })
+    if is_correct == None:
+        return redirect('/error?msg=帳號或密碼輸入錯誤')
+    else:
+        return redirect('/member')
+    
+#########################################################
 
 
 app.secret_key = '00000000'
