@@ -68,10 +68,11 @@ def signin():
     password = request.form.get('password')
     # 檢查 email 和 password 是否正確
     collection = db.user
-    is_correct = collection.find_one
-    ({
-        'email': email,
-        'password': password
+    is_correct = collection.find_one({
+        "$and": [
+            {'email': email},
+            {'password': password}
+        ]
     })
     if is_correct == None:
         return redirect('/error?msg=帳號或密碼輸入錯誤')
