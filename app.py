@@ -74,6 +74,8 @@ def signin():
             {'password': password}
         ]
     })
+    # 如果不正確，導向錯誤頁面
+    # 如果正確，導向會員頁面
     if is_correct == None:
         return redirect('/error?msg=帳號或密碼輸入錯誤')
     else:
