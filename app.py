@@ -1,7 +1,12 @@
-# 初始化資料庫連嫌
+import dotenv
+dotenv.load_dotenv()
+# 取出環境變數
+import os
+MONGODB_URL = os.getenv('MONGODB_URL')
+# 初始化資料庫連線
 
 import pymongo
-client = pymongo.MongoClient("mongodb+srv://root:Password@mycluster.b0llbe5.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster")
+client = pymongo.MongoClient(MONGODB_URL)
 db = client.member_system
 print("資料庫連線成功")
 
