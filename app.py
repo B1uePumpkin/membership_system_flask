@@ -23,7 +23,11 @@ def index():
 
 @app.route('/member')
 def member():
-    return render_template('member.html')
+    # 如果沒有登入，導向錯誤頁面
+    if 'nickname' in session:
+        return render_template('member.html')
+    else:
+        return redirect('/')
 
 # error?msg=錯誤訊息
 @app.route('/error')
@@ -75,10 +79,11 @@ def signin():
         ]
     })
     # 如果不正確，導向錯誤頁面
-    # 如果正確，導向會員頁面
+    # 如果正確，在session中記錄會員資訊，再導向會員頁面
     if is_correct == None:
         return redirect('/error?msg=帳號或密碼輸入錯誤')
     else:
+        session['nickname'] = is_correct['nickname']
         return redirect('/member')
     
 #########################################################
